@@ -1,0 +1,112 @@
+# Tic-Tac-Toe (Jogo da Velha) in Python
+
+## Description
+This is a simple implementation of the classic game Tic-Tac-Toe (Jogo da Velha) in Python. It allows two players to play the game in the terminal.
+
+---
+
+## Features
+- 2-player mode
+- Input validation to ensure proper moves
+- Detects win conditions, draw, or invalid scenarios
+
+---
+
+## Requirements
+This project requires Python 3.6 or higher. You can download Python [here](https://www.python.org/downloads/).
+
+---
+
+## How to Play
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/luisventurah1/tic-tac-toe.git
+   ```
+2. Navigate to the project folder:
+   ```bash
+   cd tic-tac-toe
+   ```
+3. Run the game:
+   ```bash
+   python tic_tac_toe.py
+   ```
+4. Follow the on-screen instructions to play the game.
+
+---
+
+## Code
+```python
+# tic_tac_toe.py
+
+def print_board(board):
+    for row in board:
+        print(" | ".join(row))
+        print("-" * 5)
+
+def check_winner(board, symbol):
+    # Check rows, columns, and diagonals
+    for i in range(3):
+        if all([cell == symbol for cell in board[i]]):
+            return True
+        if all([board[j][i] == symbol for j in range(3)]):
+            return True
+
+    if board[0][0] == board[1][1] == board[2][2] == symbol:
+        return True
+
+    if board[0][2] == board[1][1] == board[2][0] == symbol:
+        return True
+
+    return False
+
+def is_draw(board):
+    return all(cell != " " for row in board for cell in row)
+
+def main():
+    board = [[" " for _ in range(3)] for _ in range(3)]
+    players = ["X", "O"]
+    turn = 0
+
+    print("\nWelcome to Tic-Tac-Toe!\n")
+    while True:
+        print_board(board)
+        print(f"Player {players[turn % 2]}'s turn")
+
+        try:
+            move = input("Enter your move as row,col (e.g., 1,2): ").strip()
+            row, col = map(int, move.split(","))
+
+            if board[row - 1][col - 1] != " ":
+                print("Cell already occupied. Try again.")
+                continue
+
+            board[row - 1][col - 1] = players[turn % 2]
+
+            if check_winner(board, players[turn % 2]):
+                print_board(board)
+                print(f"Player {players[turn % 2]} wins!")
+                break
+
+            if is_draw(board):
+                print_board(board)
+                print("It's a draw!")
+                break
+
+            turn += 1
+
+        except (ValueError, IndexError):
+            print("Invalid input. Please enter row and column as numbers between 1 and 3.")
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## Contributing
+Feel free to fork this repository and submit pull requests to improve the game.
+
+---
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
